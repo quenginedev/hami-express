@@ -1,6 +1,6 @@
 {
-  "name": "@quenginedev/hami-server",
-  "version": "1.0.0",
+  "name": "hami-express",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -8,11 +8,8 @@
     "test": "exit 0",
     "dev:server": "nodemon test/server.js"
   },
-  "publishConfig": {
-    "@quenginedev:registry": "https://npm.pkg.github.com"
-  },
   "keywords": [],
-  "author": "",
+  "author": "Ernest Hayford <quenginedev@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",

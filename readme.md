@@ -1,8 +1,19 @@
-# Hami Server JS 🔨
+# Hami Express 🔨
 
-Hami is a module that uses mongoose models to create CRUD rest endpoints as well as socket events using express.js under the hood.
+Hami ( to give ) is a module that uses mongoose models to create CRUD rest endpoints as well as socket events using express.js under the hood. This creates endpoints such as
 
-### Using Hami
+* Get one record ✅
+* Get many records ✅
+* Get record by ID ✅
+* Create One record ✅
+* Create Many records ✅
+* Update One record ✅
+* Update many records ✅
+* Delete one record ( yet to be implemented ) 🥺
+* Delete many records ( yet to be implemented ) 🥺
+* Live events [ onUpdate, onCreate, onDelete ] ( yet to be implemented ) 🥺
+
+## Getting started
 
 ```js
 import express from 'express'
@@ -55,7 +66,5 @@ const UserSchema = new mongoose.Schema({
 
 const UserModel = mongoose.model('user', UserSchema)
 
-export default [
-    { model: UserModel }  
-]
+export default [{ model: UserModel, options: { ... } }, ... ]
 ```
