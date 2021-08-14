@@ -1,6 +1,6 @@
 {
   "name": "hami-express",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,13 @@
     "url": "https://github.com/quenginedev/hami-express/issues"
   },
   "homepage": "https://github.com/quenginedev/hami-express",
-  "keywords": ["express", "mongodb", "mongoose", "socket.io", "ramda"],
+  "keywords": [
+    "express",
+    "mongodb",
+    "mongoose",
+    "socket.io",
+    "ramda"
+  ],
   "author": "Ernest Hayford <quenginedev@gmail.com>",
   "license": "ISC",
   "dependencies": {
