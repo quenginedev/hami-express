@@ -1,7 +1,7 @@
-import {compose, isNil, mergeRight, when} from 'ramda'
-import {normalizePreHook} from './normalize-pre-hook.js'
+const {compose, isNil, mergeRight, when} = require('ramda')
+const {normalizePreHook} = require('./normalize-pre-hook.js')
 
-export const processPreHooks = (context) => (hook) => {
+exports.processPreHooks = (context) => (hook) => {
     when(isNil, () => hook = (context) => context)(hook)
     const {query, extra} = compose(
         hook,

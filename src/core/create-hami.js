@@ -1,7 +1,7 @@
-import {compose, forEach, path} from 'ramda'
-import {createRoute} from './create-route.js'
+const {compose, forEach, path} = require('ramda')
+const {createRoute} = require('./create-route.js')
 
-export const createHami = (app) => (routes = []) => {
+exports.createHami = (app) => (routes = []) => {
     forEach(compose(
         //Todo Add socket
         createRoute(app)

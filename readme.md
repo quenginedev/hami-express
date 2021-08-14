@@ -16,10 +16,10 @@ Hami ( to give ) is a module that uses mongoose models to create CRUD rest endpo
 ## Getting started
 
 ```js
-import express from 'express'
-import mongoose from 'mongoose'
-import routes from './routes'
-import {createHami} from 'hamijs'
+const express = require( ) 'express'
+const mongoose = require( ) 'mongoose'
+const routes = require( ) './routes'
+const {createHami} = require( ) 'hamijs'
 
 const startServer = async () => {
     await mongoose.connect(prop('MONGODB_URL', config), {
@@ -45,7 +45,7 @@ We first pass in the express app into createHami like so `const hami = createHam
 ### creating up a routes
 
 ```js
-import mongoose from 'mongoose'
+const mongoose = require( ) 'mongoose'
 
 const UserSchema = new mongoose.Schema({
         displayName: String,

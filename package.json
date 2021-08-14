@@ -3,12 +3,18 @@
   "version": "1.0.3",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "test": "exit 0",
-    "dev:server": "nodemon test/server.js"
+    "test": "exit 0"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quenginedev/hami-express.git"
+  },
+  "bugs": {
+    "url": "https://github.com/quenginedev/hami-express/issues"
+  },
+  "homepage": "https://github.com/quenginedev/hami-express",
+  "keywords": ["express", "mongodb", "mongoose", "socket.io", "ramda"],
   "author": "Ernest Hayford <quenginedev@gmail.com>",
   "license": "ISC",
   "dependencies": {

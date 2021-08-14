@@ -1,17 +1,18 @@
-import {compose, path} from 'ramda'
-import express from 'express'
-import {getOneRecordRoute} from '../queries/get-one-record-route.js'
-import {getManyRecordRoute} from '../queries/get-many-record-route.js'
-import {getByIdRecordRoute} from '../queries/get-by-id-record-route.js'
-import {createOneRecordRoute} from '../ mutations/create-one-record-route.js'
-import {createManyRecordRoute} from '../ mutations/create-many-record-route.js'
-import {updateOneRecordRoute} from '../ mutations/update-one-record-route.js'
-import {updateManyRecordRoute} from '../ mutations/update-many-record-route.js'
+const {compose, path} = require('ramda')
+const express = require('express')
+const {getOneRecordRoute} = require('../queries/get-one-record-route.js')
+const {getManyRecordRoute} = require('../queries/get-many-record-route.js')
+const {getByIdRecordRoute} = require('../queries/get-by-id-record-route.js')
+const {createOneRecordRoute} = require('../ mutations/create-one-record-route.js')
+const {createManyRecordRoute} = require('../ mutations/create-many-record-route.js')
+const {updateOneRecordRoute} = require('../ mutations/update-one-record-route.js')
+const {updateManyRecordRoute} = require('../ mutations/update-many-record-route.js')
 
 const router = express.Router()
 
-export const createRoute = (app) => ({model}) => {
+exports.createRoute = (app) => ({model}) => {
     const name = path(['collection', 'collectionName'], model)
+    // console.log(model.schema.paths['displayName'].instance)
     const {router: composedRouter} = compose(
         getByIdRecordRoute,
         getOneRecordRoute,

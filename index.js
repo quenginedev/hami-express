@@ -1,2 +1,2 @@
-export {createHami} from './src/core/create-hami.js'
-
+const {createHami} = require('./src/core/create-hami.js')
+exports.createHami = createHami
