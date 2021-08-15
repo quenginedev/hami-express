@@ -70,3 +70,86 @@ const UserModel = mongoose.model('user', UserSchema)
 
 export default [{model: UserModel, options: {...}}, ...]
 ```
+
+### POST Create One
+
+users/one
+
+Bodyraw (json)
+
+```json
+{
+  "email": "testUser2@hami.com",
+  "password": "password@123"
+}
+```
+
+### POST Create Many
+
+users/many
+
+Bodyraw (json)
+
+```json
+[
+  {
+    "email": "testUser3@hami.com",
+    "password": "password@123"
+  },
+  {
+    "email": "testUser4@hami.com",
+    "password": "password@123"
+  }
+]
+```
+
+
+### GET Get One
+
+/users/one
+
+### GETGet Many
+
+/users/many
+
+### PUT Update One
+
+/users/one?email=testuser@hami.com
+
+Request Params
+
+`email = testuser@hami.com`
+
+Bodyraw (json)
+
+```json
+{
+  "phoneNumber": "232323232323232323"
+}
+```
+
+### PUT Update One Copy
+
+`/users/one?email=testuser@hami.com`
+
+Request Params
+
+`email = testuser@hami.com`
+
+Bodyraw (json)
+
+```json
+{
+  "phoneNumber": "232323232323232323"
+}
+```
+
+### DEL Delete Many
+
+/users/one
+
+
+### DELDelete One
+
+/users/one
+
