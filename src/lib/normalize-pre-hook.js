@@ -1,7 +1,12 @@
-const {compose, defaultTo, path} = require('ramda')
+const {compose, defaultTo, path, cond, not, isNil, T, isEmpty, or} = require('ramda')
 
-exports.normalizePreHook = ({model, request, response,}) => {
-    const filter = compose(defaultTo({}), path(['query', 'filter']))(request)
+const toJSON = cond([
+    [compose(not, or(isNil, isEmpty)), JSON.parse],
+    [T, r => r],
+])
+
+exports.normalizePreHook = ({model, request, response}) => {
+    const filter = compose(defaultTo({}), toJSON, path(['query', 'filter']))(request)
     const sort = compose(defaultTo(null), path(['query', 'sort']))(request)
     const limit = compose(defaultTo(null), path(['query', 'limit']))(request)
     const body = compose(defaultTo(null), path(['body']))(request)
@@ -12,7 +17,7 @@ exports.normalizePreHook = ({model, request, response,}) => {
         sort,
         limit,
         body,
-        params
+        params,
     }
 
     return {model, request, response, query, extra}

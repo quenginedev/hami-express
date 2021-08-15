@@ -1,4 +1,4 @@
-const {compose, forEach, path} = require('ramda')
+const {compose, forEach} = require('ramda')
 const {createRoute} = require('./create-route.js')
 
 exports.createHami = (app) => (routes = []) => {

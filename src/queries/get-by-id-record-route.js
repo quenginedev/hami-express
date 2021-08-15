@@ -1,4 +1,4 @@
-const {map, path, prop} = require('ramda')
+const {path} = require('ramda')
 const {createRouteByConfig} = require('../lib/create-router-by-config.js')
 const {processPreHooks} = require('../lib/process-pre-hooks.js')
 const {QueryBuilder} = require('../lib/get-data-from-query-builder.js')
