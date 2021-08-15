@@ -103,7 +103,6 @@ Bodyraw (json)
 ]
 ```
 
-
 ### GET Get One
 
 /users/one
@@ -140,7 +139,7 @@ Bodyraw (json)
 
 ```json
 {
-  "phoneNumber": "232323232323232323"
+  "phoneNumber": "232323232323232323"
 }
 ```
 
@@ -148,8 +147,6 @@ Bodyraw (json)
 
 /users/one
 
-
 ### DELDelete One
 
 /users/one
-
