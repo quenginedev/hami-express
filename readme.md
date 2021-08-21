@@ -18,135 +18,105 @@ express.js under the hood. This creates endpoints such as
 
 ```js
 const express = require('express')
-const mongoose = require('mongoose')
-const routes = require('./routes')
+const {connect} = require('mongoose')
+const socketServer = require('socket.io')
+const bodyParser = require('body-parser')
 const {createHami} = require('hami-express')
+const routes = require('./routes')
 
-const startServer = async () => {
-    await mongoose.connect(prop('MONGODB_URL', config), {
-        useNewUrlParser: true,
-        useFindAndModify: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true
-    })
+const startTestServer = async () => {
+	// connecting to mongodb URI
+	await connect(MONGODB_URI, {
+		useCreateIndex: true,
+		useFindAndModify: true,
+		useNewUrlParser: true,
+		useUnifiedTopology: true
+	})
 
-    const app = express()
-    const hami = createHami(app)
-    hami(routes)
+	const app = express()
+	app.use(bodyParser.json())
 
-    app.listen(SERVER_PORT, () => {
-        console.log(`Server started on port ${SERVER_PORT}`)
-    })
+	// creating routes on hami
+	// returns http server
+	const hami = createHami(app)
+	const server = hami(routes, {socketServer})
+	return server
 }
+
+startTestServer()
+	.then(server => {
+		server.listen(SERVER_PORT, () => {
+			console.log('Server started on port', SERVER_PORT)
+		})
+	})
+	.catch(err => {
+		console.error(err)
+	})
+
 
 ```
 
 We first pass in the express app into createHami like so `const hami = createHami(app)`. This will setup hami up so that
-can can be ready to start genrating routes for your mongoose models `hami(routes)`
+can be ready to start generating routes and live events for your mongoose models `hami(routes)`
 
 ### creating up a routes
 
 ```js
-const mongoose = require('mongoose')
+const {model} = require('mongoose')
+const {hamiSchema} = require('hami-express')
 
-const UserSchema = new mongoose.Schema({
-    displayName: String,
-    dateOfBirth: Date,
-    phoneNumber: String,
-    email: {
-        type: String,
-        unique: true,
-        required: true,
-        lowercase: true,
-        trim: true
-    },
-    password: {
-        type: String,
-        required: true
-    }
+const UserSchema = hamiSchema({
+	displayName: String,
+	email: {type: String, unique: true, required: true},
+	password: {type: String, required: true}
 })
 
-const UserModel = mongoose.model('user', UserSchema)
-
-export default [{model: UserModel, options: {...}}, ...]
+exports.UserModel = model('user', UserSchema)
 ```
 
-### POST Create One
+### Generated routes
 
-users/one
+1. users/one
 
-Bodyraw (json)
+   * Method - `GET`
+   * queryParams - `{ filter: MongoDbQuery }`
+2. users/many
 
-```json
-{
-  "email": "testUser2@hami.com",
-  "password": "password@123"
-}
-```
+   * Method - `GET`
+   * Query - `{ filter: MongoDbQuery, sort: MongooseSortObject, limit: Number  }`
+3. users/:id
 
-### POST Create Many
+   * Method - `GET`
+   * Param - `RecordID`
+4. users/one
 
-users/many
+   * Method - `POST`
+   * body - `Record`
+5. users/many
 
-Bodyraw (json)
+   * Method - `POST`
+   * body - `[Record]`
+6. users/one
 
-```json
-[
-  {
-    "email": "testUser3@hami.com",
-    "password": "password@123"
-  },
-  {
-    "email": "testUser4@hami.com",
-    "password": "password@123"
-  }
-]
-```
+   * Method - `UPDATE`
+   * Query - `{ filter: MongoDbQuery  }`
+   * body - `Record`
+7. users/many
 
-### GET Get One
+   * Method - `UPDATE`
+   * Query - `{ filter: MongoDbQuery, sort: MongooseSortObject, limit: Number  }`
+   * body - `UpdateRecord`
+8. users/one
 
-/users/one
+   * Method - `DELETE`
+   * Query - `{ filter: MongoDbQuery  }`
+9. users/many
 
-### GETGet Many
+   * Method - `DELETE`
+   * Query - `{ filter: MongoDbQuery  }`
 
-/users/many
+# Todo 😉
 
-### PUT Update One
+### Websocket documentation
 
-/users/one?email=testuser@hami.com
-
-Request Params
-
-`email = testuser@hami.com`
-
-Bodyraw (json)
-
-```json
-{
-  "phoneNumber": "232323232323232323"
-}
-```
-
-### PUT Update One Copy
-
-`/users/one?email=testuser@hami.com`
-
-Request Params
-
-`email = testuser@hami.com`
-
-Bodyraw (json)
-
-```json
-{
-  "phoneNumber": "232323232323232323"
-}
-```
-
-### DEL Delete Many
-
-/users/one
-
-### DELDelete One
-
-/users/one
+### Client library
