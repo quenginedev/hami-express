@@ -18,7 +18,7 @@ exports.deleteOneRecordRoute =  createRouteByConfig({
             const data = await QueryBuilder({queryBuilder, query})
             await processPostHooks({model, response, request, query, data, extra})(postHook)
             const collectionName = path(['collection', 'collectionName'])(model)
-            publish(`${collectionName}:delete`, [queryBuilder])
+            publish(`${collectionName}:delete`, [data])
         }catch (e) {
             const handleErrorResponse = createHandleErrorResponse(response)
             handleErrorResponse(e)

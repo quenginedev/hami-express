@@ -21,7 +21,7 @@ exports.updateManyRecordRoute = createRouteByConfig({
             const data = await QueryBuilder({queryBuilder, query})
             await processPostHooks({model, response, request, query, data, extra})(postHook)
             const collectionName = path(['collection', 'collectionName'])(model)
-            publish(`${collectionName}:update`, [queryBuilder])
+            publish(`${collectionName}:update`, data)
         } catch (e) {
             const handleErrorResponse = createHandleErrorResponse(response)
             handleErrorResponse(e)

@@ -1,4 +1,4 @@
-const {path, prop} = require('ramda')
+const {path, prop, compose, defaultTo, pick, ifElse, isNil} = require('ramda')
 const {createRouteByConfig} = require('../lib/create-router-by-config.js')
 const {processPreHooks} = require('../lib/process-pre-hooks.js')
 const {QueryBuilder} = require('../lib/get-data-from-query-builder.js')
@@ -14,14 +14,19 @@ exports.updateOneRecordRoute = createRouteByConfig({
             const preHook = path(['hook', 'pre', 'updateOne'])(options)
             const postHook = path(['hook', 'post', 'updateOne'])(options)
             const {query, extra} = processPreHooks({model, request, response})(preHook)
-            const {_id} = await model.findOneAndUpdate(prop('filter', query), prop('body', query))
-            query.filter = {_id}
-            const queryBuilder = model.findById(prop('filter', query))
-            const data = await QueryBuilder({queryBuilder, query})
+            const record = await model.findOneAndUpdate(prop('filter', query), prop('body', query))
+            const data = await ifElse(
+                isNil,
+                async ()=> null,
+                async ({_id})=>{
+                    query.filter = {_id}
+                    const queryBuilder = model.findById(prop('filter', query))
+                    return  QueryBuilder({queryBuilder, query})
+                }
+            )(record)
             await processPostHooks({model, response, request, query, data, extra})(postHook)
             const collectionName = path(['collection', 'collectionName'])(model)
-            // console.log(queryBuilder)
-            publish(`${collectionName}:update`, [queryBuilder])
+            publish(`${collectionName}:update`, [data])
         } catch (e) {
             const handleErrorResponse = createHandleErrorResponse(response)
             handleErrorResponse(e)

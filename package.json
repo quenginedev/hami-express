@@ -27,6 +27,7 @@
   "dependencies": {
     "@types/pubsub-js": "^1.8.2",
     "express": "^4.17.1",
+    "mingo": "^4.1.4",
     "mongoose": "^5.13.7",
     "pubsub-js": "^1.9.3",
     "ramda": "^0.27.1",
