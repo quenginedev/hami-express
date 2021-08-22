@@ -1,6 +1,5 @@
 const {subscribe} = require('pubsub-js')
-const {compose, filter, isNil, length, lt, map, not, when, type, prop, defaultTo} = require('ramda')
-const {pipeAsync, traversePromises} = require('ramda-async')
+const {compose, length, lt, map, when, prop, defaultTo} = require('ramda')
 const {Query} = require('mingo')
 
 exports.createEventListener = socket => ({ LISTEN_EVENT, EMIT_EVENT }) => {

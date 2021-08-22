@@ -9,6 +9,7 @@ const {updateOneRecordRoute} = require('../ mutations/update-one-record-route.js
 const {updateManyRecordRoute} = require('../ mutations/update-many-record-route.js')
 const {deleteOneRecordRoute} = require('../ mutations/delete-one-record-route.js')
 const {deleteManyRecordRoute} = require('../ mutations/delete-many-record-route.js')
+const {getRecordCountRoute} = require('../queries/get-record-count-route')
 
 exports.createRoute = (app) => ({model}) => {
     const router = express.Router()
@@ -16,6 +17,7 @@ exports.createRoute = (app) => ({model}) => {
     const {router: composedRouter} = compose(
         getByIdRecordRoute,
         getOneRecordRoute,
+        getRecordCountRoute,
         getManyRecordRoute,
         createOneRecordRoute,
         createManyRecordRoute,

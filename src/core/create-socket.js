@@ -1,4 +1,4 @@
-const {when, compose, not, isNil, or, isEmpty, path, forEach, ifElse} = require('ramda')
+const {compose, not, isNil, or, isEmpty, path, forEach, ifElse} = require('ramda')
 const {createServer} = require('http')
 const {onCreateRecord} = require('../events/on-create-record')
 const {onUpdateRecord} = require('../events/on-update-record')
