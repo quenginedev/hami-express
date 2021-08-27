@@ -25,19 +25,19 @@ can be ready to start generating routes and live events for your mongoose models
 
 ### Creating Models
 
-`/models/user-model.js`
+`/models/record-model.js`
 
 ```js
 const {model} = require('mongoose')
 const {hamiSchema} = require('hami-express')
 
-const UserSchema = hamiSchema({
+const RecordSchema = hamiSchema({
 	displayName: String,
 	email: {type: String, unique: true, required: true},
 	password: {type: String, required: true}
 })
 
-exports.UserModel = model('user', UserSchema)
+exports.RecordModel = model('record', RecordSchema)
 ```
 
 Note `hamiSchema({...})` is a helper function that adds timestamps for `createdAt`, `updatedAt` and `deletedAt`. eg.
@@ -60,10 +60,10 @@ const record = new Schema({
 `/routes.js`
 
 ```js
-const {UserModel} = require('./models/user-model')
+const {RecordModel} = require('./models/record-model')
 
 module.exports = [
-   {model: UserModel},
+   {model: RecordModel},
 ]
 ```
 
@@ -114,47 +114,47 @@ startTestServer()
 
 ## Get records
 
-### 1. users/one
+### 1. records/one
 
 * Method - `GET`
-* queryParams - `{ filter: MongoDbQuery }`
+* Query - `{ filter: MongoDbQuery }`
 
-### 2. users/count
+### 2. records/count
 
 * Method - `GET`
 * Query - `{ filter: MongoDbQuery  }`
 
-### 3. users/many
+### 3. records/many
 
 * Method - `GET`
 * Query - `{ filter: MongoDbQuery, sort: MongooseSortObject, limit: Number  }`
 
-### 4. users/:id
+### 4. records/:id
 
 * Method - `GET`
 * Param - `RecordID`
 
 ## Create records
 
-### 5. users/one
+### 5. records/one
 
 * Method - `POST`
 * body - `Record`
 
-### 6. users/many
+### 6. records/many
 
 * Method - `POST`
 * body - `[Record]`
 
 ## Update records
 
-### 7. users/one
+### 7. records/one
 
 * Method - `UPDATE`
 * Query - `{ filter: MongoDbQuery  }`
 * body - `Record`
 
-### 8. users/many
+### 8. records/many
 
 * Method - `UPDATE`
 * Query - `{ filter: MongoDbQuery, sort: MongooseSortObject, limit: Number  }`
@@ -162,21 +162,64 @@ startTestServer()
 
 ## Delete records
 
-### 9. users/one
+### 9. records/one
 
 * Method - `DELETE`
 * Query - `{ filter: MongoDbQuery  }`
 
-### 10. users/many
+### 10. records/many
 
 * Method - `DELETE`
 * Query - `{ filter: MongoDbQuery  }`
+
+# Websocket using Socket.IO
+
+This feature is experimental since I do not know how to achieve this without passing arguments for filtering the events, But if you know of a better way don't hesitate sharing or creating a PR.
+
+There are three types of events you can subscribe to. These are
+
+1. records:create - When a record is created
+2. records:update - When a record is updated
+3. records:delete - When a record is deleted
+
+To listen to events, you must first emit a message to your hami-express server which subscribes you for getting events.
+The format for the events are the model names in plural and the hook. Example, if the model name is 
+`bakery` and the hook you want is `create`, Then the event would be `bakeries:create`.
+A `MongoDBQuery` can be passed as an argument to filter what events to receive.
+
+Now, to listen to the event, calling on `records:created`, will send you an event when a record is being created. Note to listen to the event, 
+use the past tense of the hook. Bellow is the mapping for the listeners
+
+1. records:create = records:created
+2. records:update = records:updated
+3. records:delete = records:deleted
+
+Example
+```js
+const listenToRecords = async (callback) => {
+    const socket = io(HAMI_EXPRESS_URL)
+    // Subscribe
+    socket.on('connect', ()=>{
+        socket.emit('records:create', { group: { $eq: 'AWESOME' } })
+    })
+    // Listen
+    socket.on('records:created', callback)
+    // To disconnect when done listening 
+    return socket.disconnect
+}
+
+const stopListeningToRecords = listenToRecords(({event, data})=>{
+	console.log(event) // records:created
+    console.log(data) // [ Records ]
+})
+
+// disconnect
+stopListeningToRecords()
+```
 
 # Todo 😉
 
-### Websocket documentation
-
-### Client library
+### Client libraries [ Coming soon ]
 
 * ![JS](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fbrandlogovector.com%2Fwp-content%2Fuploads%2F2020%2F08%2FJavascript-JS-Logo-150x150.png&f=1&nofb=1)
 * ![Dart](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fraw.github.com%2Fmaksimr%2Fdvm%2Fmaster%2Fdart-logo.png&f=1&nofb=1)
