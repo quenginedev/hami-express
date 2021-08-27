@@ -176,6 +176,20 @@ startTestServer()
 
 This feature is experimental since I do not know how to achieve this without passing arguments for filtering the events, But if you know of a better way don't hesitate sharing or creating a PR.
 
+### Server
+First you will need to inject socket.io into hami as a dependency as socketServer.
+```js
+const socketServer = require('socket.io')
+const {createHami} = require('hami-express')
+...
+
+const hami = createHami(app)
+const server = hami(routes, { socketServer })
+
+...
+```
+
+### Client
 There are three types of events you can subscribe to. These are
 
 1. records:create - When a record is created
@@ -216,6 +230,9 @@ const stopListeningToRecords = listenToRecords(({event, data})=>{
 // disconnect
 stopListeningToRecords()
 ```
+
+Note, the same version of socket.io used on the server should be the same used on the client. 
+Otherwise, the socket connection won't work. 
 
 # Todo 😉
 
