@@ -20,7 +20,8 @@
     "mongodb",
     "mongoose",
     "socket.io",
-    "ramda"
+    "ramda",
+    "crud"
   ],
   "author": "Ernest Hayford <quenginedev@gmail.com>",
   "license": "ISC",

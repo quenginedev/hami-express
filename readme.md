@@ -33,8 +33,7 @@ const {hamiSchema} = require('hami-express')
 
 const RecordSchema = hamiSchema({
 	displayName: String,
-	email: {type: String, unique: true, required: true},
-	password: {type: String, required: true}
+	group: { type:String, enum: ['average', 'awesome'], default: '' }
 })
 
 exports.RecordModel = model('record', RecordSchema)
@@ -181,6 +180,7 @@ First you will need to inject socket.io into hami as a dependency as socketServe
 ```js
 const socketServer = require('socket.io')
 const {createHami} = require('hami-express')
+
 ...
 
 const hami = createHami(app)
@@ -214,7 +214,7 @@ const listenToRecords = async (callback) => {
     const socket = io(HAMI_EXPRESS_URL)
     // Subscribe
     socket.on('connect', ()=>{
-        socket.emit('records:create', { group: { $eq: 'AWESOME' } })
+        socket.emit('records:create', { group: { $eq: 'awesome' } })
     })
     // Listen
     socket.on('records:created', callback)
